@@ -3,30 +3,17 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
-  BarChart3, 
   Users, 
   TrendingUp, 
-  Settings, 
-  FileText,
-  Building2,
-  Calendar,
-  UserPlus,
-  Home
+  UserPlus
 } from 'lucide-react'
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', icon: Home },
   { name: 'Clients', href: '/contacts', icon: Users },
-  { name: 'Portfolio', href: '/portfolio', icon: TrendingUp },
-  { name: 'Analytics', href: '/analytics', icon: BarChart3 },
-  { name: 'Reports', href: '/reports', icon: FileText },
-  { name: 'Calendar', href: '/calendar', icon: Calendar },
 ]
 
 const secondaryNavigation = [
   { name: 'Add Client', href: '/create-advisor', icon: UserPlus },
-  { name: 'Firm Settings', href: '/settings', icon: Building2 },
-  { name: 'Account', href: '/protected', icon: Settings },
 ]
 
 export function Sidebar() {

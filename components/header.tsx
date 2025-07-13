@@ -48,7 +48,7 @@ export function Header() {
             <button className="lg:hidden p-2 rounded-lg hover:bg-financial-gray-100 transition-colors">
               <Menu className="h-5 w-5 text-financial-gray-600" />
             </button>
-            <Link href="/dashboard" className="flex items-center space-x-3">
+            <Link href="/contacts" className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-financial-blue-600 to-financial-blue-700 rounded-lg flex items-center justify-center shadow-sm">
                 <span className="text-white font-bold text-sm">OT</span>
               </div>
