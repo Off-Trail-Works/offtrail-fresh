@@ -2,133 +2,139 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { 
+  BarChart3, 
+  Users, 
+  TrendingUp, 
+  Briefcase, 
+  Settings, 
+  FileText,
+  PieChart,
+  Building2,
+  Target,
+  Calendar,
+  UserPlus,
+  Home
+} from 'lucide-react'
+
+const navigation = [
+  { name: 'Dashboard', href: '/dashboard', icon: Home },
+  { name: 'Clients', href: '/contacts', icon: Users },
+  { name: 'Portfolio', href: '/portfolio', icon: TrendingUp },
+  { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+  { name: 'Reports', href: '/reports', icon: FileText },
+  { name: 'Calendar', href: '/calendar', icon: Calendar },
+]
+
+const secondaryNavigation = [
+  { name: 'Add Client', href: '/create-advisor', icon: UserPlus },
+  { name: 'Firm Settings', href: '/settings', icon: Building2 },
+  { name: 'Account', href: '/protected', icon: Settings },
+]
 
 export function Sidebar() {
   const pathname = usePathname()
 
-  const isActive = (path: string) => pathname === path
+  const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/')
 
   return (
-    <div className="w-64 bg-white/95 backdrop-blur-sm shadow-sm border-r border-slate-200/50">
-      <div className="p-4">
-        <nav className="space-y-2">
-          <Link
-            href="/"
-            className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              isActive('/') 
-                ? 'text-slate-800 bg-gradient-to-r from-slate-100 to-slate-50 border-l-4 border-slate-600 shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
-            }`}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"
-              />
-            </svg>
-            <span className={`${isActive('/') ? 'font-semibold' : 'font-medium'}`}>Dashboard</span>
-          </Link>
-          <Link
-            href="/contacts"
-            className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              isActive('/contacts') 
-                ? 'text-slate-800 bg-gradient-to-r from-slate-100 to-slate-50 border-l-4 border-slate-600 shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
-            }`}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 515.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 919.288 0M15 7a3 3 0 11-6 0 3 3 0 616 0zm6 3a2 2 0 11-4 0 2 2 0 414 0zM7 10a2 2 0 11-4 0 2 2 0 414 0z"
-              />
-            </svg>
-            <span className={`${isActive('/contacts') ? 'font-semibold' : 'font-medium'}`}>Contacts</span>
-          </Link>
-          <Link
-            href="/create-advisor"
-            className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              isActive('/create-advisor') 
-                ? 'text-slate-800 bg-gradient-to-r from-slate-100 to-slate-50 border-l-4 border-slate-600 shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
-            }`}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
-            <span className={`${isActive('/create-advisor') ? 'font-semibold' : 'font-medium'}`}>Create Advisor</span>
-          </Link>
-          <Link
-            href="/auth/login"
-            className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              isActive('/auth/login') 
-                ? 'text-slate-800 bg-gradient-to-r from-slate-100 to-slate-50 border-l-4 border-slate-600 shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
-            }`}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-              />
-            </svg>
-            <span className={`${isActive('/auth/login') ? 'font-semibold' : 'font-medium'}`}>Login</span>
-          </Link>
-          <Link
-            href="/protected"
-            className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 cursor-pointer ${
-              isActive('/protected') 
-                ? 'text-slate-800 bg-gradient-to-r from-slate-100 to-slate-50 border-l-4 border-slate-600 shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
-            }`}
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M16 7a4 4 0 11-8 0 4 4 0 818 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-            <span className={`${isActive('/protected') ? 'font-semibold' : 'font-medium'}`}>Profile</span>
-          </Link>
+    <aside className="hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col">
+      <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white border-r border-financial-gray-200 px-6 pb-4 pt-6">
+        {/* Navigation Title */}
+        <div className="flex h-10 shrink-0 items-center">
+          <h2 className="text-sm font-semibold text-financial-gray-900">Navigation</h2>
+        </div>
+        
+        {/* Primary Navigation */}
+        <nav className="flex flex-1 flex-col">
+          <ul role="list" className="flex flex-1 flex-col gap-y-7">
+            <li>
+              <ul role="list" className="-mx-2 space-y-1">
+                {navigation.map((item) => {
+                  const Icon = item.icon
+                  const active = isActive(item.href)
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        className={`group flex gap-x-3 rounded-lg p-3 text-sm font-medium leading-6 transition-all duration-200 ${
+                          active
+                            ? 'bg-financial-blue-50 text-financial-blue-700 border-l-4 border-financial-blue-600'
+                            : 'text-financial-gray-700 hover:text-financial-blue-700 hover:bg-financial-gray-50'
+                        }`}
+                      >
+                        <Icon
+                          className={`h-5 w-5 shrink-0 ${
+                            active 
+                              ? 'text-financial-blue-600' 
+                              : 'text-financial-gray-400 group-hover:text-financial-blue-600'
+                          }`}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                        {active && (
+                          <div className="ml-auto">
+                            <div className="h-1.5 w-1.5 rounded-full bg-financial-blue-600"></div>
+                          </div>
+                        )}
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </li>
+            
+            {/* Secondary Navigation */}
+            <li>
+              <div className="text-xs font-medium text-financial-gray-500 uppercase tracking-wide">
+                Quick Actions
+              </div>
+              <ul role="list" className="-mx-2 mt-3 space-y-1">
+                {secondaryNavigation.map((item) => {
+                  const Icon = item.icon
+                  const active = isActive(item.href)
+                  return (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        className={`group flex gap-x-3 rounded-lg p-2.5 text-sm font-medium leading-6 transition-all duration-200 ${
+                          active
+                            ? 'bg-financial-gray-100 text-financial-gray-900'
+                            : 'text-financial-gray-600 hover:text-financial-gray-900 hover:bg-financial-gray-50'
+                        }`}
+                      >
+                        <Icon
+                          className={`h-4 w-4 shrink-0 ${
+                            active 
+                              ? 'text-financial-gray-700' 
+                              : 'text-financial-gray-400 group-hover:text-financial-gray-700'
+                          }`}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </li>
+
+            {/* Performance Summary Card */}
+            <li className="mt-auto">
+              <div className="rounded-lg bg-gradient-to-br from-financial-blue-500 to-financial-blue-600 p-4 text-white">
+                <div className="flex items-center">
+                  <TrendingUp className="h-5 w-5" />
+                  <span className="ml-2 text-sm font-medium">Portfolio Performance</span>
+                </div>
+                <div className="mt-2">
+                  <p className="text-2xl font-bold">+12.4%</p>
+                  <p className="text-xs text-financial-blue-100">This month</p>
+                </div>
+              </div>
+            </li>
+          </ul>
         </nav>
       </div>
-    </div>
+    </aside>
   )
 }

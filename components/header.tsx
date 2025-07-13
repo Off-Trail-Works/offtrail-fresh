@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Bell, Settings, User, LogOut, Menu } from 'lucide-react'
 
 export function Header() {
   const router = useRouter()
@@ -39,39 +40,92 @@ export function Header() {
   }
 
   return (
-    <div className="bg-white/90 backdrop-blur-md shadow-sm border-b border-slate-200/50">
-      <div className="flex items-center justify-between px-6 py-4">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl flex items-center justify-center shadow-lg">
-            <span className="text-white font-bold text-sm">OT</span>
-          </div>
-          <h1 className="text-xl font-bold text-slate-800">
-            Off Trail Financial
-          </h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          {loading ? (
-            <div className="text-slate-400">Loading...</div>
-          ) : user ? (
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-slate-600">{user.email}</span>
-              <button
-                onClick={handleLogout}
-                className="text-slate-600 hover:text-slate-800 underline hover:no-underline transition-all duration-200 cursor-pointer"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <Link
-              href="/auth/login"
-              className="text-slate-600 hover:text-slate-800 underline hover:no-underline transition-all duration-200"
-            >
-              Login
+    <header className="bg-white/95 backdrop-blur-sm border-b border-financial-gray-200 sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo and Brand */}
+          <div className="flex items-center space-x-4">
+            <button className="lg:hidden p-2 rounded-lg hover:bg-financial-gray-100 transition-colors">
+              <Menu className="h-5 w-5 text-financial-gray-600" />
+            </button>
+            <Link href="/dashboard" className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-financial-blue-600 to-financial-blue-700 rounded-lg flex items-center justify-center shadow-sm">
+                <span className="text-white font-bold text-sm">OT</span>
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-lg font-semibold text-financial-gray-900">
+                  OffTrail
+                </h1>
+                <p className="text-xs text-financial-gray-500 -mt-1">
+                  Wealth Management
+                </p>
+              </div>
             </Link>
-          )}
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="flex items-center space-x-3">
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 bg-financial-gray-300 rounded animate-pulse"></div>
+                <div className="w-20 h-4 bg-financial-gray-300 rounded animate-pulse"></div>
+              </div>
+            ) : user ? (
+              <>
+                {/* Notifications */}
+                <button className="p-2 rounded-lg hover:bg-financial-gray-100 transition-colors relative">
+                  <Bell className="h-5 w-5 text-financial-gray-600" />
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-financial-red-500 rounded-full border-2 border-white"></span>
+                </button>
+
+                {/* Settings */}
+                <button className="p-2 rounded-lg hover:bg-financial-gray-100 transition-colors">
+                  <Settings className="h-5 w-5 text-financial-gray-600" />
+                </button>
+
+                {/* User Menu */}
+                <div className="flex items-center space-x-3 pl-3 border-l border-financial-gray-200">
+                  <div className="hidden md:block text-right">
+                    <p className="text-sm font-medium text-financial-gray-900">
+                      {user.email?.split('@')[0]}
+                    </p>
+                    <p className="text-xs text-financial-gray-500">
+                      Financial Advisor
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-financial-blue-500 to-financial-blue-600 rounded-full flex items-center justify-center">
+                      <User className="h-4 w-4 text-white" />
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="p-1.5 rounded-lg hover:bg-financial-red-50 hover:text-financial-red-600 transition-colors group"
+                      title="Sign out"
+                    >
+                      <LogOut className="h-4 w-4 text-financial-gray-600 group-hover:text-financial-red-600" />
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center space-x-3">
+                <Link
+                  href="/auth/login"
+                  className="px-4 py-2 text-sm font-medium text-financial-gray-700 hover:text-financial-gray-900 transition-colors"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/auth/signup"
+                  className="px-4 py-2 text-sm font-medium text-white bg-financial-blue-600 hover:bg-financial-blue-700 rounded-lg transition-colors shadow-sm"
+                >
+                  Get Started
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </header>
   )
 }
