@@ -1,8 +1,8 @@
 import { createBrowserClient } from "@supabase/ssr";
+import { getSupabaseConfig } from "./config";
 
 export function createClient() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  );
+  const config = getSupabaseConfig();
+  console.log('🔧 Supabase config:', { url: config.url, anonKey: config.anonKey.slice(0, 20) + '...' });
+  return createBrowserClient(config.url, config.anonKey);
 }
