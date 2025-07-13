@@ -1,105 +1,267 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# OffTrail Wealth Management Platform
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+A modern, professional wealth management and client relationship management platform built with Next.js 15, Supabase, and Drizzle ORM.
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+## 🏗️ Architecture
 
-## Features
+### Tech Stack
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript
+- **Backend**: Supabase (PostgreSQL, Auth, RLS)
+- **Database ORM**: Drizzle ORM with type-safe schema
+- **Styling**: Tailwind CSS with custom financial app design system
+- **UI Components**: Custom components with Lucide React icons
+- **Authentication**: Supabase Auth with session management
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+### Database Architecture
+- **Multi-tenant** design with Row-Level Security (RLS)
+- **Firms** → **Advisors** → **Contacts** relationship hierarchy
+- Automatic test advisor creation for branch deployments
+- Vault-based secret management for production security
 
-## Demo
+### Design System
+Professional financial app styling inspired by leading platforms:
+- **Color System**: Custom `financial-*` color palette (blue, green, red, amber, gray)
+- **Typography**: Inter font family with professional hierarchy
+- **Components**: Modern cards, tables, forms with financial app patterns
+- **Responsive**: Desktop table views, mobile card layouts
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+## 🚀 Getting Started
 
-## Deploy to Vercel
+### Prerequisites
+- Node.js 18+
+- Supabase account and project
+- Git
 
-Vercel deployment will guide you through creating a Supabase account and project.
+### Installation
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
-
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
-
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
-
-## Clone and run locally
-
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
-
-2. Create a Next.js app using the Supabase Starter template npx command
-
+1. **Clone the repository**
    ```bash
-   npx create-next-app --example with-supabase with-supabase-app
+   git clone <repository-url>
+   cd offtrail-fresh
    ```
 
+2. **Install dependencies**
    ```bash
-   yarn create next-app --example with-supabase with-supabase-app
+   npm install
    ```
 
+3. **Environment Setup**
+
+   Copy `.env.example` to `.env.local` and configure:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+   DATABASE_URL=your_database_connection_string
+   ```
+
+4. **Database Setup**
+
+   **Option A: Drizzle (Recommended for Development)**
    ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
+   # Generate and run migrations
+   npm run db:generate
+   npm run db:migrate
+
+   # Seed the database
+   npm run db:seed
    ```
 
-3. Use `cd` to change into the app's directory
+   **Option B: Supabase SQL Editor**
+   - Run the migrations from `supabase/migrations/`
+   - Run the seed from `supabase/seed.sql`
 
+5. **Start Development Server**
    ```bash
-   cd with-supabase-app
-   ```
-
-4. Rename `.env.example` to `.env.local` and update the following:
-
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
-
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
-
-5. You can now run the Next.js local development server:
-
-   ```bash
+   # Basic development
    npm run dev
+
+   # Development with type checking and linting
+   npm run dev:check
    ```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+## 📁 Project Structure
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+```
+offtrail-fresh/
+├── app/                          # Next.js App Router
+│   ├── actions/                  # Server Actions
+│   │   └── contacts.ts          # Contact data fetching
+│   ├── auth/                    # Authentication pages
+│   │   └── login/               # Login page
+│   ├── contacts/                # Main contacts/client management
+│   ├── create-advisor/          # Advisor registration
+│   ├── globals.css              # Global styles
+│   ├── layout.tsx               # Root layout
+│   └── page.tsx                 # Root page (redirects to /contacts)
+├── components/                   # React Components
+│   ├── ui/                      # Base UI components
+│   ├── header.tsx               # App header with navigation
+│   ├── sidebar.tsx              # Sidebar navigation
+│   └── login-form.tsx           # Modern login form
+├── lib/                         # Utilities and configurations
+│   ├── db/                      # Database layer
+│   │   ├── client.ts            # Client-side exports (types only)
+│   │   ├── schema.ts            # Drizzle schema with RLS policies
+│   │   └── server.ts            # Server-side database connection
+│   ├── supabase/               # Supabase configuration
+│   │   ├── client.ts           # Client-side Supabase
+│   │   ├── middleware.ts       # Auth middleware
+│   │   └── server.ts           # Server-side Supabase
+│   └── utils.ts                # Utility functions
+├── scripts/                     # Build and maintenance scripts
+│   ├── create-test-advisor.js  # Test advisor creation
+│   └── seed-drizzle.ts         # Database seeding
+├── supabase/                    # Supabase configuration
+│   ├── migrations/             # Database migrations
+│   └── seed.sql                # SQL seed file
+├── tailwind.config.ts          # Tailwind with financial design system
+└── drizzle.config.ts           # Drizzle ORM configuration
+```
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+## 🧭 Available Commands
 
-## Feedback and issues
+### Development
+```bash
+npm run dev              # Start development server
+npm run dev:check        # Dev server + TypeScript checking + linting
+npm run build            # Build for production
+npm run start            # Start production server
+npm run lint             # Run ESLint
+npm run typecheck        # Run TypeScript type checking
+```
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+### Database Management
+```bash
+npm run db:generate      # Generate Drizzle migrations
+npm run db:migrate       # Run migrations
+npm run db:push          # Push schema changes (development)
+npm run db:studio        # Open Drizzle Studio
+npm run db:seed          # Seed database with test data
+```
 
-## More Supabase examples
+### Testing & Utilities
+```bash
+npm run create-test-advisor  # Create test advisor for branch deployments
+```
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+## 🗄️ Database Schema
+
+### Core Tables
+
+**firms**
+- `id` (UUID, Primary Key)
+- `name` (Text) - Firm name
+- `slug` (Text, Unique) - URL-friendly identifier
+- `created_at`, `updated_at` (Timestamps)
+
+**advisors**
+- `id` (UUID, Primary Key) - Maps to Supabase Auth user ID
+- `firm_id` (UUID, Foreign Key) - References firms.id
+- `email` (Text, Unique)
+- `first_name`, `last_name` (Text)
+- `role` (Enum: 'advisor', 'senior_advisor', 'partner')
+- `created_at`, `updated_at` (Timestamps)
+
+**contacts**
+- `id` (UUID, Primary Key)
+- `firm_id` (UUID, Foreign Key) - References firms.id
+- `first_name`, `last_name` (Text)
+- `email`, `phone` (Text, Optional)
+- `status` (Enum: 'prospect', 'active', 'inactive', 'former')
+- `created_at`, `updated_at` (Timestamps)
+
+### Row-Level Security (RLS)
+- **Firms**: Advisors can only see their own firm
+- **Advisors**: Can view own record and same-firm colleagues
+- **Contacts**: Can only access contacts from their firm
+
+## 🎨 Design System
+
+### Color Palette
+```css
+financial-blue:    Trust and professionalism (#1A5276)
+financial-green:   Success and growth (#27AE60)
+financial-red:     Alerts and losses (#E74C3C)
+financial-amber:   Warnings and attention (#F39C12)
+financial-gray:    Neutral backgrounds and text
+```
+
+### Component Patterns
+- **Cards**: Rounded corners, subtle shadows, clean borders
+- **Forms**: Icon-enhanced inputs, professional focus states
+- **Tables**: Clean headers, hover states, status indicators
+- **Navigation**: Hierarchical structure, active states
+- **Buttons**: Professional gradients, proper disabled states
+
+## 🔐 Authentication & Security
+
+### Authentication Flow
+1. Users sign in via `/auth/login`
+2. Successful login redirects to `/contacts` (main app)
+3. Middleware protects routes requiring authentication
+4. Session managed via Supabase Auth cookies
+
+### Security Features
+- Row-Level Security (RLS) policies
+- Supabase Vault for secret management
+- JWT-based authentication
+- Secure cookie-based sessions
+- CSRF protection via middleware
+
+## 🌱 Seeding & Test Data
+
+The project includes comprehensive seed data:
+- **3 firms** with varying contact counts
+- **28 total contacts** across all firms
+- **Mixed status distribution** (active, prospect, inactive, former)
+- **Realistic names and contact information**
+
+Firms included:
+- **Wealth Management Partners** (15 contacts) - Primary test firm
+- **Investment Solutions LLC** (8 contacts)
+- **Financial Planning Group** (5 contacts)
+
+## 🚢 Deployment
+
+### Environment Variables
+Ensure all required environment variables are set:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `DATABASE_URL`
+
+### Database Setup
+1. Run migrations via Supabase dashboard or Drizzle
+2. Execute seed data from `supabase/seed.sql`
+3. Create test advisor using the Edge Function
+
+### Branch Deployments
+- Automatic test advisor creation for branch databases
+- Vault-based secret access for security
+- Admin override key bypasses RLS for testing
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes following the established patterns
+4. Ensure type safety and linting pass
+5. Submit a pull request
+
+## 📚 Additional Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Drizzle ORM Documentation](https://orm.drizzle.team/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+
+## 🔧 Troubleshooting
+
+### Common Issues
+- **Build failures**: Run `npm run typecheck` to identify TypeScript errors
+- **Database connection**: Verify environment variables and Supabase project status
+- **RLS policies**: Ensure user is properly authenticated and belongs to a firm
+- **Styling issues**: Check Tailwind configuration and custom financial classes
+
+For additional help, check the `CLAUDE.md` file for development context and patterns.
