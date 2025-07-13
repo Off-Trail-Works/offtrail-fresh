@@ -41,5 +41,4 @@ INSERT INTO contacts (firm_id, first_name, last_name, email, phone, status, crea
   ('550e8400-e29b-41d4-a716-446655440003', 'Andrew', 'Hill', 'andrew.hill@email.com', '555-0302', 'prospect', NOW(), NOW()),
   ('550e8400-e29b-41d4-a716-446655440003', 'Lauren', 'Scott', 'lauren.scott@email.com', '555-0303', 'inactive', NOW(), NOW()),
   ('550e8400-e29b-41d4-a716-446655440003', 'Thomas', 'Green', 'thomas.green@email.com', '555-0304', 'active', NOW(), NOW()),
-  ('550e8400-e29b-41d4-a716-446655440003', 'Rachel', 'Adams', 'rachel.adams@email.com', '555-0305', 'former', NOW(), NOW())
-ON CONFLICT (email) DO NOTHING;
+  ('550e8400-e29b-41d4-a716-446655440003', 'Rachel', 'Adams', 'rachel.adams@email.com', '555-0305', 'former', NOW(), NOW());

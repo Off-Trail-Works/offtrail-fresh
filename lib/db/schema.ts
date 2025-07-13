@@ -62,7 +62,7 @@ export const contacts = pgTable('contacts', {
   firmId: uuid('firm_id').notNull().references(() => firms.id),
   firstName: text('first_name').notNull(),
   lastName: text('last_name').notNull(),
-  email: text('email'),
+  email: text('email').unique(),
   phone: text('phone'),
   status: contactStatusEnum('status').default('prospect').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
