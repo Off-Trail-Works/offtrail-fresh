@@ -6,6 +6,7 @@ DELETE FROM contacts;
 DELETE FROM advisors;
 DELETE FROM firms;
 
+-- Force commit
 -- Insert firms with specific UUIDs for consistency
 INSERT INTO firms (id, name, slug, created_at, updated_at) VALUES
   ('550e8400-e29b-41d4-a716-446655440001', 'Wealth Management Partners', 'wealth-management-partners', NOW(), NOW()),
