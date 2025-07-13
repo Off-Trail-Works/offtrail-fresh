@@ -50,6 +50,7 @@ interface Database {
 }
 
 Deno.serve(async (req) => {
+  // Force cache bust - v2
   try {
     // Initialize Supabase client with service role key (bypasses RLS)
     const supabaseClient = createClient<Database>(
@@ -79,7 +80,13 @@ Deno.serve(async (req) => {
       console.error('Error fetching firms:', firmsError)
       return new Response(
         JSON.stringify({ error: 'Failed to fetch firms', details: firmsError }), 
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=0, must-revalidate'
+          } 
+        }
       )
     }
 
@@ -87,7 +94,13 @@ Deno.serve(async (req) => {
       console.log('No firms found')
       return new Response(
         JSON.stringify({ error: 'No firms found in database' }), 
-        { status: 404, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 404, 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=0, must-revalidate'
+          } 
+        }
       )
     }
 
@@ -123,7 +136,13 @@ Deno.serve(async (req) => {
           firm: firmWithMostContacts.name,
           advisorId: existingAdvisor.id
         }), 
-        { status: 200, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 200, 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=0, must-revalidate'
+          } 
+        }
       )
     }
 
@@ -138,7 +157,13 @@ Deno.serve(async (req) => {
       console.error('Error creating auth user:', authError)
       return new Response(
         JSON.stringify({ error: 'Failed to create auth user', details: authError }), 
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=0, must-revalidate'
+          } 
+        }
       )
     }
 
@@ -164,7 +189,13 @@ Deno.serve(async (req) => {
       await supabaseClient.auth.admin.deleteUser(authData.user.id)
       return new Response(
         JSON.stringify({ error: 'Failed to create advisor record', details: advisorError }), 
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
+        { 
+          status: 500, 
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=0, must-revalidate'
+          } 
+        }
       )
     }
 
@@ -183,14 +214,26 @@ Deno.serve(async (req) => {
 
     return new Response(
       JSON.stringify(result), 
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      { 
+        status: 200, 
+        headers: { 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=0, must-revalidate'
+        } 
+      }
     )
 
   } catch (error) {
     console.error('Unexpected error:', error)
     return new Response(
       JSON.stringify({ error: 'Unexpected error occurred', details: error.message }), 
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      { 
+        status: 500, 
+        headers: { 
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=0, must-revalidate'
+        } 
+      }
     )
   }
 })
