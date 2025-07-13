@@ -1,0 +1,6 @@
+# Supabase configuration file
+# This ensures Edge Functions are properly deployed to all branches
+
+[functions.create-test-advisor]
+# Explicitly declare the function to be deployed
+# The slug matches the function folder name in supabase/functions/
