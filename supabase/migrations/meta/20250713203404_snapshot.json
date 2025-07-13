@@ -1,5 +1,5 @@
 {
-  "id": "fb30a554-2fba-49ca-beac-3e1117bc7b4d",
+  "id": "cef8cf7e-46ec-4ee3-a3a2-13f791ca4f34",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -87,7 +87,35 @@
           ]
         }
       },
-      "policies": {},
+      "policies": {
+        "advisors_view_own": {
+          "name": "advisors_view_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "public"
+          ],
+          "using": "id = auth.uid()"
+        },
+        "advisors_view_same_firm": {
+          "name": "advisors_view_same_firm",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "public"
+          ],
+          "using": "firm_id IN (SELECT firm_id FROM advisors WHERE id = auth.uid())"
+        },
+        "advisors_update_own": {
+          "name": "advisors_update_own",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "public"
+          ],
+          "using": "id = auth.uid()"
+        }
+      },
       "checkConstraints": {},
       "isRLSEnabled": false
     },
@@ -173,7 +201,44 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
+      "policies": {
+        "contacts_view_same_firm": {
+          "name": "contacts_view_same_firm",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "public"
+          ],
+          "using": "firm_id IN (SELECT firm_id FROM advisors WHERE id = auth.uid())"
+        },
+        "contacts_insert_same_firm": {
+          "name": "contacts_insert_same_firm",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "public"
+          ],
+          "withCheck": "firm_id IN (SELECT firm_id FROM advisors WHERE id = auth.uid())"
+        },
+        "contacts_update_same_firm": {
+          "name": "contacts_update_same_firm",
+          "as": "PERMISSIVE",
+          "for": "UPDATE",
+          "to": [
+            "public"
+          ],
+          "using": "firm_id IN (SELECT firm_id FROM advisors WHERE id = auth.uid())"
+        },
+        "contacts_delete_same_firm": {
+          "name": "contacts_delete_same_firm",
+          "as": "PERMISSIVE",
+          "for": "DELETE",
+          "to": [
+            "public"
+          ],
+          "using": "firm_id IN (SELECT firm_id FROM advisors WHERE id = auth.uid())"
+        }
+      },
       "checkConstraints": {},
       "isRLSEnabled": false
     },
@@ -227,7 +292,17 @@
           ]
         }
       },
-      "policies": {},
+      "policies": {
+        "firms_view_own": {
+          "name": "firms_view_own",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "public"
+          ],
+          "using": "id IN (SELECT firm_id FROM advisors WHERE id = auth.uid())"
+        }
+      },
       "checkConstraints": {},
       "isRLSEnabled": false
     }
