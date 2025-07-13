@@ -7,13 +7,13 @@ DELETE FROM advisors;
 DELETE FROM firms;
 
 -- Insert firms with specific UUIDs for consistency
-INSERT INTO firms (id, name, slug, created_at, updated_at) VALUES 
+INSERT INTO firms (id, name, slug, created_at, updated_at) VALUES
   ('550e8400-e29b-41d4-a716-446655440001', 'Wealth Management Partners', 'wealth-management-partners', NOW(), NOW()),
   ('550e8400-e29b-41d4-a716-446655440002', 'Financial Planning Group', 'financial-planning-group', NOW(), NOW());
 
 -- Insert 1000 contacts for Wealth Management Partners
 INSERT INTO contacts (firm_id, first_name, last_name, email, phone, status, created_at, updated_at)
-SELECT 
+SELECT
   '550e8400-e29b-41d4-a716-446655440001'::uuid,
   CASE (n % 40)
     WHEN 0 THEN 'Alexander' WHEN 1 THEN 'Michael' WHEN 2 THEN 'William' WHEN 3 THEN 'James' WHEN 4 THEN 'David'
@@ -25,7 +25,7 @@ SELECT
     WHEN 30 THEN 'Lisa' WHEN 31 THEN 'Nancy' WHEN 32 THEN 'Betty' WHEN 33 THEN 'Helen' WHEN 34 THEN 'Sandra'
     WHEN 35 THEN 'Donna' WHEN 36 THEN 'Carol' WHEN 37 THEN 'Ruth' WHEN 38 THEN 'Sharon' WHEN 39 THEN 'Michelle'
   END,
-  CASE (n % 50) 
+  CASE (n % 50)
     WHEN 0 THEN 'Smith' WHEN 1 THEN 'Johnson' WHEN 2 THEN 'Williams' WHEN 3 THEN 'Brown' WHEN 4 THEN 'Jones'
     WHEN 5 THEN 'Garcia' WHEN 6 THEN 'Miller' WHEN 7 THEN 'Davis' WHEN 8 THEN 'Rodriguez' WHEN 9 THEN 'Martinez'
     WHEN 10 THEN 'Hernandez' WHEN 11 THEN 'Lopez' WHEN 12 THEN 'Gonzalez' WHEN 13 THEN 'Wilson' WHEN 14 THEN 'Anderson'
@@ -48,9 +48,9 @@ SELECT
       WHEN 30 THEN 'Lisa' WHEN 31 THEN 'Nancy' WHEN 32 THEN 'Betty' WHEN 33 THEN 'Helen' WHEN 34 THEN 'Sandra'
       WHEN 35 THEN 'Donna' WHEN 36 THEN 'Carol' WHEN 37 THEN 'Ruth' WHEN 38 THEN 'Sharon' WHEN 39 THEN 'Michelle'
     END
-  ) || '.' || 
+  ) || '.' ||
   LOWER(
-    CASE (n % 50) 
+    CASE (n % 50)
       WHEN 0 THEN 'Smith' WHEN 1 THEN 'Johnson' WHEN 2 THEN 'Williams' WHEN 3 THEN 'Brown' WHEN 4 THEN 'Jones'
       WHEN 5 THEN 'Garcia' WHEN 6 THEN 'Miller' WHEN 7 THEN 'Davis' WHEN 8 THEN 'Rodriguez' WHEN 9 THEN 'Martinez'
       WHEN 10 THEN 'Hernandez' WHEN 11 THEN 'Lopez' WHEN 12 THEN 'Gonzalez' WHEN 13 THEN 'Wilson' WHEN 14 THEN 'Anderson'
@@ -66,7 +66,7 @@ SELECT
   '555-' || LPAD(n::text, 4, '0'),
   CASE (n % 4)
     WHEN 0 THEN 'prospect'
-    WHEN 1 THEN 'active' 
+    WHEN 1 THEN 'active'
     WHEN 2 THEN 'inactive'
     WHEN 3 THEN 'former'
   END,
@@ -76,7 +76,7 @@ FROM generate_series(1, 1000) AS n;
 
 -- Insert 100 contacts for Financial Planning Group
 INSERT INTO contacts (firm_id, first_name, last_name, email, phone, status, created_at, updated_at)
-SELECT 
+SELECT
   '550e8400-e29b-41d4-a716-446655440002'::uuid,
   CASE (n % 20)
     WHEN 0 THEN 'Emma' WHEN 1 THEN 'Liam' WHEN 2 THEN 'Olivia' WHEN 3 THEN 'Noah' WHEN 4 THEN 'Ava'
@@ -84,7 +84,7 @@ SELECT
     WHEN 10 THEN 'Mia' WHEN 11 THEN 'Oliver' WHEN 12 THEN 'Charlotte' WHEN 13 THEN 'Ethan' WHEN 14 THEN 'Amelia'
     WHEN 15 THEN 'Aiden' WHEN 16 THEN 'Harper' WHEN 17 THEN 'Sebastian' WHEN 18 THEN 'Evelyn' WHEN 19 THEN 'Mason'
   END,
-  CASE (n % 25) 
+  CASE (n % 25)
     WHEN 0 THEN 'Johnson' WHEN 1 THEN 'Williams' WHEN 2 THEN 'Brown' WHEN 3 THEN 'Jones' WHEN 4 THEN 'Garcia'
     WHEN 5 THEN 'Miller' WHEN 6 THEN 'Davis' WHEN 7 THEN 'Rodriguez' WHEN 8 THEN 'Martinez' WHEN 9 THEN 'Hernandez'
     WHEN 10 THEN 'Lopez' WHEN 11 THEN 'Gonzalez' WHEN 12 THEN 'Wilson' WHEN 13 THEN 'Anderson' WHEN 14 THEN 'Thomas'
@@ -98,9 +98,9 @@ SELECT
       WHEN 10 THEN 'Mia' WHEN 11 THEN 'Oliver' WHEN 12 THEN 'Charlotte' WHEN 13 THEN 'Ethan' WHEN 14 THEN 'Amelia'
       WHEN 15 THEN 'Aiden' WHEN 16 THEN 'Harper' WHEN 17 THEN 'Sebastian' WHEN 18 THEN 'Evelyn' WHEN 19 THEN 'Mason'
     END
-  ) || '.' || 
+  ) || '.' ||
   LOWER(
-    CASE (n % 25) 
+    CASE (n % 25)
       WHEN 0 THEN 'Johnson' WHEN 1 THEN 'Williams' WHEN 2 THEN 'Brown' WHEN 3 THEN 'Jones' WHEN 4 THEN 'Garcia'
       WHEN 5 THEN 'Miller' WHEN 6 THEN 'Davis' WHEN 7 THEN 'Rodriguez' WHEN 8 THEN 'Martinez' WHEN 9 THEN 'Hernandez'
       WHEN 10 THEN 'Lopez' WHEN 11 THEN 'Gonzalez' WHEN 12 THEN 'Wilson' WHEN 13 THEN 'Anderson' WHEN 14 THEN 'Thomas'
@@ -111,7 +111,7 @@ SELECT
   '555-' || LPAD((n + 1000)::text, 4, '0'),
   CASE (n % 3)
     WHEN 0 THEN 'prospect'
-    WHEN 1 THEN 'active' 
+    WHEN 1 THEN 'active'
     WHEN 2 THEN 'inactive'
   END,
   NOW(),
