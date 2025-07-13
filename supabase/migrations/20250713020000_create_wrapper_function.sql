@@ -1,21 +1,19 @@
--- Create secure wrapper function to trigger advisor creation
--- Uses SECURITY DEFINER to access vault secrets safely
+-- Create wrapper function to trigger advisor creation
+-- Makes internal HTTP request to Edge Function
 
 CREATE OR REPLACE FUNCTION public.trigger_advisor_creation()
 RETURNS text
 LANGUAGE plpgsql
-SECURITY DEFINER AS $$
+AS $$
 DECLARE
   -- Supabase internal URL to functions gateway (same for all projects)
   edge_function_url text := 'http://127.0.0.1:54321/functions/v1/create-test-advisor';
-  
-  -- Securely access service role key from Supabase Vault
-  service_key text := vault.get_secret('supabase_service_role_key');
   
   response_body jsonb;
   response_status int;
 BEGIN
   -- Make HTTP request to Edge Function using pg_net
+  -- Internal requests within Supabase don't need explicit auth
   SELECT
     status_code,
     body
@@ -25,10 +23,7 @@ BEGIN
   FROM
     extensions.http_post(
       url := edge_function_url,
-      headers := jsonb_build_object(
-        'Content-Type', 'application/json',
-        'Authorization', 'Bearer ' || service_key
-      ),
+      headers := jsonb_build_object('Content-Type', 'application/json'),
       body := '{}'::jsonb
     );
 
