@@ -13,6 +13,18 @@ For local development:
 - `vercel env pull .env.local` - Pull environment variables from Vercel
 - No test framework is currently configured
 
+## Critical Supabase Development Workflow
+
+**MANDATORY before every commit that includes database changes:**
+
+1. **Make changes** - Edit functions, SQL files, etc.
+2. **Create migration** - `supabase migration new your_change_description`
+3. **Reset and rebuild** - `supabase db reset` (destroys local DB, rebuilds from scratch)
+4. **Test locally** - `supabase functions serve` and test everything
+5. **Only then commit** - If reset passes and tests work locally
+
+The `supabase db reset` step is critical because it simulates exactly what happens when Vercel creates a fresh preview branch database. Any migration errors will be caught locally instead of breaking the deployment.
+
 ## Architecture Overview
 
 This is an OffTrail CRM built as a Next.js 15 application with Supabase integration using Vercel's marketplace integration.
