@@ -5,4 +5,4 @@
 CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
 
 -- Enable the vault extension for secret management
-CREATE EXTENSION IF NOT EXISTS vault WITH SCHEMA vault;
+CREATE EXTENSION IF NOT EXISTS supabase_vault WITH SCHEMA vault;

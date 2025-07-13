@@ -54,17 +54,17 @@ Deno.serve(async (req) => {
   try {
     // Initialize Supabase client with service role key (bypasses RLS)
     const supabaseClient = createClient<Database>(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-      {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
-      }
-    )
+    // The Deno.env.get() calls for URL and anon key are correct
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+  {
+    // This part is new: it passes the authorization from the incoming
+    // request (which contains the service_role_key) to the client.
+    global: { headers: { Authorization: req.headers.get('Authorization')! } }
+  })
 
-    console.log('Finding firm with most contacts...')
+
+   console.log('Finding firm with most contacts...')
 
     // Find firm with most contacts
     const { data: firms, error: firmsError } = await supabaseClient
@@ -79,13 +79,13 @@ Deno.serve(async (req) => {
     if (firmsError) {
       console.error('Error fetching firms:', firmsError)
       return new Response(
-        JSON.stringify({ error: 'Failed to fetch firms', details: firmsError }), 
-        { 
-          status: 500, 
-          headers: { 
+        JSON.stringify({ error: 'Failed to fetch firms', details: firmsError }),
+        {
+          status: 500,
+          headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'public, max-age=0, must-revalidate'
-          } 
+          }
         }
       )
     }
@@ -93,13 +93,13 @@ Deno.serve(async (req) => {
     if (!firms || firms.length === 0) {
       console.log('No firms found')
       return new Response(
-        JSON.stringify({ error: 'No firms found in database' }), 
-        { 
-          status: 404, 
-          headers: { 
+        JSON.stringify({ error: 'No firms found in database' }),
+        {
+          status: 404,
+          headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'public, max-age=0, must-revalidate'
-          } 
+          }
         }
       )
     }
@@ -135,13 +135,13 @@ Deno.serve(async (req) => {
           password: testPassword,
           firm: firmWithMostContacts.name,
           advisorId: existingAdvisor.id
-        }), 
-        { 
-          status: 200, 
-          headers: { 
+        }),
+        {
+          status: 200,
+          headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'public, max-age=0, must-revalidate'
-          } 
+          }
         }
       )
     }
@@ -156,13 +156,13 @@ Deno.serve(async (req) => {
     if (authError) {
       console.error('Error creating auth user:', authError)
       return new Response(
-        JSON.stringify({ error: 'Failed to create auth user', details: authError }), 
-        { 
-          status: 500, 
-          headers: { 
+        JSON.stringify({ error: 'Failed to create auth user', details: authError }),
+        {
+          status: 500,
+          headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'public, max-age=0, must-revalidate'
-          } 
+          }
         }
       )
     }
@@ -188,19 +188,19 @@ Deno.serve(async (req) => {
       // Clean up auth user if advisor creation failed
       await supabaseClient.auth.admin.deleteUser(authData.user.id)
       return new Response(
-        JSON.stringify({ error: 'Failed to create advisor record', details: advisorError }), 
-        { 
-          status: 500, 
-          headers: { 
+        JSON.stringify({ error: 'Failed to create advisor record', details: advisorError }),
+        {
+          status: 500,
+          headers: {
             'Content-Type': 'application/json',
             'Cache-Control': 'public, max-age=0, must-revalidate'
-          } 
+          }
         }
       )
     }
 
     console.log('✅ Test advisor created successfully!')
-    
+
     const result = {
       message: 'Test advisor created successfully!',
       email: testEmail,
@@ -213,26 +213,26 @@ Deno.serve(async (req) => {
     console.log('Result:', result)
 
     return new Response(
-      JSON.stringify(result), 
-      { 
-        status: 200, 
-        headers: { 
+      JSON.stringify(result),
+      {
+        status: 200,
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=0, must-revalidate'
-        } 
+        }
       }
     )
 
   } catch (error) {
     console.error('Unexpected error:', error)
     return new Response(
-      JSON.stringify({ error: 'Unexpected error occurred', details: error.message }), 
-      { 
-        status: 500, 
-        headers: { 
+      JSON.stringify({ error: 'Unexpected error occurred', details: error.message }),
+      {
+        status: 500,
+        headers: {
           'Content-Type': 'application/json',
           'Cache-Control': 'public, max-age=0, must-revalidate'
-        } 
+        }
       }
     )
   }

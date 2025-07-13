@@ -11,16 +11,11 @@ SECURITY DEFINER AS $$
 DECLARE
   -- This internal URL is static and works in all environments (local and deployed)
   edge_function_url text := 'http://127.0.0.1:54321/functions/v1/create-test-advisor';
-  
-  -- Dynamically and securely get the service key for the CURRENT environment from the Vault
-  service_key text;
-  
+
 BEGIN
   -- Dynamically and securely get the service key for the CURRENT environment from the Vault
-  SELECT decrypted_secret INTO service_key 
-  FROM vault.decrypted_secrets 
-  WHERE name = 'supabase_service_role_key';
-  
+  service_key := vault.get_secret('supabase_service_role_key');
+
   -- Perform the authenticated HTTP request
   PERFORM net.http_post(
       url := edge_function_url,
