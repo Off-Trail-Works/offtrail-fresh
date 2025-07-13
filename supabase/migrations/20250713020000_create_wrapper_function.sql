@@ -21,7 +21,7 @@ BEGIN
     response_status,
     response_body
   FROM
-    extensions.http_post(
+    net.http_post(
       url := edge_function_url,
       headers := jsonb_build_object('Content-Type', 'application/json'),
       body := '{}'::jsonb
