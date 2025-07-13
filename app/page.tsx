@@ -6,6 +6,9 @@ import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import Link from "next/link";
 
+// Force dynamic rendering to avoid prerendering issues
+export const dynamic = 'force-dynamic';
+
 export default function Home() {
   const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
   const [advisor, setAdvisor] = useState<{

@@ -4,6 +4,9 @@ import { useState } from 'react'
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 
+// Force dynamic rendering to avoid prerendering issues
+export const dynamic = 'force-dynamic';
+
 export default function CreateAdvisorPage() {
   const [formData, setFormData] = useState({
     email: '',

@@ -4,12 +4,18 @@ import { createClient } from "@/lib/supabase/client"
 import { useRouter } from 'next/navigation'
 
 export function Header() {
-  const supabase = createClient()
   const router = useRouter()
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/auth/login')
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push('/auth/login')
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Fallback - still redirect to login
+      router.push('/auth/login')
+    }
   }
 
   return (
