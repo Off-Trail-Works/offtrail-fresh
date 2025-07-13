@@ -52,13 +52,15 @@ interface Database {
 Deno.serve(async (req) => {
   // Force cache bust - v2
   try {
-    // This is the correct way to initialize a client for admin tasks.
-    // It securely uses the key passed in the request header from the SQL function.
+    // Use service role key for admin operations (bypasses RLS)
     const supabaseClient = createClient<Database>(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       {
-        global: { headers: { Authorization: req.headers.get('Authorization')! } }
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
       }
     )
 
@@ -225,7 +227,7 @@ Deno.serve(async (req) => {
   } catch (error) {
     console.error('Unexpected error:', error)
     return new Response(
-      JSON.stringify({ error: 'Unexpected error occurred', details: error.message }),
+      JSON.stringify({ error: 'Unexpected error occurred', details: error instanceof Error ? error.message : String(error) }),
       {
         status: 500,
         headers: {

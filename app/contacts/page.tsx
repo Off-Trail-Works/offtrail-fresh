@@ -1,97 +1,54 @@
 'use client'
 
-import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
+import { getContactsData } from "@/app/actions/contacts";
+import type { Contact, Advisor, Firm } from "@/lib/db/client";
 
 // Force dynamic rendering to avoid prerendering issues
 export const dynamic = 'force-dynamic';
 
-interface Contact {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string | null;
-  phone: string | null;
-  status: string;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Advisor {
-  id: string;
-  firm_id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  firm?: {
-    id: string;
-    name: string;
-    slug: string;
-  };
+interface AdvisorWithFirm extends Advisor {
+  firm?: Firm;
 }
 
 export default function ContactsPage() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [advisor, setAdvisor] = useState<Advisor | null>(null);
+  const [advisor, setAdvisor] = useState<AdvisorWithFirm | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterBy, setFilterBy] = useState('all');
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
   useEffect(() => {
-    async function loadData() {
-      const supabase = createClient();
+    function loadData() {
+      startTransition(async () => {
+        setLoading(true);
+        setError(null);
 
-      // Check if user is authenticated
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-
-      if (userError || !user) {
-        setError("Please sign in to access contacts");
-        setLoading(false);
-        return;
-      }
-
-      // Get advisor info
-      const { data: advisorData, error: advisorError } = await supabase
-        .from("advisors")
-        .select(`
-          *,
-          firm:firms(*)
-        `)
-        .eq("id", user.id)
-        .single();
-
-      if (advisorError || !advisorData) {
-        setError("You need to be registered as an advisor to access this page.");
-        setLoading(false);
-        return;
-      }
-
-      setAdvisor(advisorData);
-
-      // Get contacts for this firm
-      const { data: contactsData, error: contactsError } = await supabase
-        .from("contacts")
-        .select("*")
-        .eq("firm_id", advisorData.firm_id)
-        .order("created_at", { ascending: false });
-
-      if (contactsError) {
-        setError("Error fetching contacts: " + contactsError.message);
-      } else {
-        setContacts(contactsData || []);
-      }
-
-      setLoading(false);
+        try {
+          const result = await getContactsData();
+          
+          if (result.error) {
+            setError(result.error);
+          } else {
+            setContacts(result.contacts);
+            setAdvisor(result.advisor);
+          }
+        } catch (error) {
+          setError("Failed to load data");
+        } finally {
+          setLoading(false);
+        }
+      });
     }
 
     loadData();
-  }, [router]);
+  }, []);
 
   const filteredContacts = contacts.filter((contact) => {
     // Filter by status
@@ -100,8 +57,8 @@ export default function ContactsPage() {
     // Filter by search query
     const searchMatch =
       !searchQuery ||
-      contact.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contact.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      contact.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (contact.email && contact.email.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (contact.phone && contact.phone.includes(searchQuery));
 
@@ -205,7 +162,7 @@ export default function ContactsPage() {
                       <tr key={contact.id} className="hover:bg-slate-50/50 transition-colors duration-150">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-slate-900">
-                            {contact.first_name} {contact.last_name}
+                            {contact.firstName} {contact.lastName}
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
