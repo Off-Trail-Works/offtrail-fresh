@@ -1,13 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
 export async function POST(request: Request) {
-  // Only allow in non-production environments
-  if (process.env.VERCEL_ENV === 'production') {
-    return Response.json(
-      { error: 'Advisor creation not allowed in production' },
-      { status: 403 }
-    )
-  }
+  // Note: This endpoint is for testing/demo purposes
+  // Add production restrictions if needed
 
   if (
     !process.env.SUPABASE_SERVICE_ROLE_KEY ||
