@@ -2,18 +2,38 @@
 
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 export function Header() {
   const router = useRouter()
+  const [user, setUser] = useState<{ email?: string } | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      } catch (error) {
+        console.error('Error getting user:', error)
+        setUser(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    getUser()
+  }, [])
 
   const handleLogout = async () => {
     try {
       const supabase = createClient()
       await supabase.auth.signOut()
+      setUser(null)
       router.push('/auth/login')
     } catch (error) {
       console.error('Logout error:', error)
-      // Fallback - still redirect to login
       router.push('/auth/login')
     }
   }
@@ -30,12 +50,26 @@ export function Header() {
           </h1>
         </div>
         <div className="flex items-center space-x-4">
-          <button
-            onClick={handleLogout}
-            className="text-slate-600 hover:text-slate-800 underline hover:no-underline transition-all duration-200 cursor-pointer"
-          >
-            Logout
-          </button>
+          {loading ? (
+            <div className="text-slate-400">Loading...</div>
+          ) : user ? (
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-slate-600">{user.email}</span>
+              <button
+                onClick={handleLogout}
+                className="text-slate-600 hover:text-slate-800 underline hover:no-underline transition-all duration-200 cursor-pointer"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/auth/login"
+              className="text-slate-600 hover:text-slate-800 underline hover:no-underline transition-all duration-200"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </div>

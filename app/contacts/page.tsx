@@ -51,7 +51,8 @@ export default function ContactsPage() {
       const { data: { user }, error: userError } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        router.push("/auth/login");
+        setError("Please sign in to access contacts");
+        setLoading(false);
         return;
       }
 
