@@ -132,7 +132,7 @@ export default function ContactsPage() {
       <div className="flex h-[calc(100vh-80px)]">
         <Sidebar />
         {/* Main Content */}
-        <div className="flex-1 p-6 lg:p-8 overflow-auto">
+        <div className="flex-1 lg:ml-72 p-6 lg:p-8 overflow-auto">
           {/* Header Section */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-6">
@@ -230,7 +230,7 @@ export default function ContactsPage() {
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-financial-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search clients by name, email, or phone..."
+placeholder="Search by name, email, or phone..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 border border-financial-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-financial-blue-500 focus:border-financial-blue-500 transition-colors"
@@ -287,8 +287,8 @@ export default function ContactsPage() {
                         <tr key={contact.id} className="hover:bg-financial-gray-50 transition-colors duration-200">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="w-10 h-10 bg-gradient-to-br from-financial-blue-500 to-financial-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                {contact.firstName[0]}{contact.lastName[0]}
+                              <div className="w-10 h-10 bg-gradient-to-br from-financial-blue-500 to-financial-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                                {contact.firstName?.[0] || ''}{contact.lastName?.[0] || ''}
                               </div>
                               <div className="ml-4">
                                 <div className="text-sm font-semibold text-financial-gray-900">
@@ -361,8 +361,8 @@ export default function ContactsPage() {
                   <div key={contact.id} className="bg-white rounded-xl p-6 shadow-financial border border-financial-gray-200">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center">
-                        <div className="w-12 h-12 bg-gradient-to-br from-financial-blue-500 to-financial-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-                          {contact.firstName[0]}{contact.lastName[0]}
+                        <div className="w-12 h-12 bg-gradient-to-br from-financial-blue-500 to-financial-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                          {contact.firstName?.[0] || ''}{contact.lastName?.[0] || ''}
                         </div>
                         <div className="ml-4">
                           <h3 className="text-lg font-semibold text-financial-gray-900">
