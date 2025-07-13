@@ -7,8 +7,14 @@ import { Sidebar } from "@/components/sidebar";
 import Link from "next/link";
 
 export default function Home() {
-  const [user, setUser] = useState<any>(null);
-  const [advisor, setAdvisor] = useState<any>(null);
+  const [user, setUser] = useState<{ id: string; email?: string } | null>(null);
+  const [advisor, setAdvisor] = useState<{
+    id: string;
+    first_name: string;
+    last_name: string;
+    role: string;
+    firm?: { id: string; name: string; slug: string };
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -61,11 +67,11 @@ export default function Home() {
               </h1>
               {advisor ? (
                 <p className="text-slate-600">
-                  Welcome back, {advisor.first_name}! You're connected to {advisor.firm?.name}.
+                  Welcome back, {advisor.first_name}! You&apos;re connected to {advisor.firm?.name}.
                 </p>
               ) : user ? (
                 <p className="text-slate-600">
-                  You're signed in but need to be registered as an advisor to access the CRM features.
+                  You&apos;re signed in but need to be registered as an advisor to access the CRM features.
                 </p>
               ) : (
                 <p className="text-slate-600">
