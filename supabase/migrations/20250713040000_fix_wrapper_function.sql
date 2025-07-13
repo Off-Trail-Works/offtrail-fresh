@@ -17,7 +17,9 @@ DECLARE
   
 BEGIN
   -- Dynamically and securely get the service key for the CURRENT environment from the Vault
-  service_key := vault.get_secret('supabase_service_role_key');
+  SELECT decrypted_secret INTO service_key 
+  FROM vault.decrypted_secrets 
+  WHERE name = 'supabase_service_role_key';
   
   -- Perform the authenticated HTTP request
   PERFORM net.http_post(
