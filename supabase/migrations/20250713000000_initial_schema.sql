@@ -1,5 +1,6 @@
 -- Create initial schema for offtrail app
 -- Firms, Advisors, and Contacts with RLS
+-- Add comment
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
