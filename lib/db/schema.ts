@@ -22,7 +22,7 @@ export const firms = pgTable('firms', {
   slug: text('slug').notNull().unique(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-}, (table) => [
+}, () => [
   pgPolicy('firms_view_own', {
     for: 'select',
     to: 'public',
@@ -39,7 +39,7 @@ export const advisors = pgTable('advisors', {
   role: advisorRoleEnum('role').default('advisor').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-}, (table) => [
+}, () => [
   pgPolicy('advisors_view_own', {
     for: 'select',
     to: 'public',
@@ -67,7 +67,7 @@ export const contacts = pgTable('contacts', {
   status: contactStatusEnum('status').default('prospect').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
-}, (table) => [
+}, () => [
   pgPolicy('contacts_view_same_firm', {
     for: 'select',
     to: 'public',

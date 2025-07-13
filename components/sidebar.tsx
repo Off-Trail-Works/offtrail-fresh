@@ -6,12 +6,9 @@ import {
   BarChart3, 
   Users, 
   TrendingUp, 
-  Briefcase, 
   Settings, 
   FileText,
-  PieChart,
   Building2,
-  Target,
   Calendar,
   UserPlus,
   Home

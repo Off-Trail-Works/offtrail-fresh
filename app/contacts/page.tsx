@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
 import { getContactsData } from "@/app/actions/contacts";
@@ -35,30 +34,26 @@ export default function ContactsPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterBy, setFilterBy] = useState('all');
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   useEffect(() => {
-    function loadData() {
-      startTransition(async () => {
-        setLoading(true);
-        setError(null);
+    async function loadData() {
+      setLoading(true);
+      setError(null);
 
-        try {
-          const result = await getContactsData();
-          
-          if (result.error) {
-            setError(result.error);
-          } else {
-            setContacts(result.contacts);
-            setAdvisor(result.advisor);
-          }
-        } catch (error) {
-          setError("Failed to load data");
-        } finally {
-          setLoading(false);
+      try {
+        const result = await getContactsData();
+        
+        if (result.error) {
+          setError(result.error);
+        } else {
+          setContacts(result.contacts);
+          setAdvisor(result.advisor);
         }
-      });
+      } catch {
+        setError("Failed to load data");
+      } finally {
+        setLoading(false);
+      }
     }
 
     loadData();
