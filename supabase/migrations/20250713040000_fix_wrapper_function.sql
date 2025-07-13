@@ -11,10 +11,13 @@ BEGIN
   FROM vault.decrypted_secrets
   WHERE name = 'supabase_service_role_key';
 
-  -- Make HTTP request to Edge Function (no auth header needed for internal calls)
+  -- Make HTTP request to Edge Function with service role key in Authorization header
   PERFORM net.http_post(
       url := edge_function_url,
-      headers := jsonb_build_object('Content-Type', 'application/json'),
+      headers := jsonb_build_object(
+          'Content-Type', 'application/json',
+          'Authorization', 'Bearer ' || service_key
+      ),
       body := '{}'::jsonb
   );
 

@@ -52,27 +52,13 @@ interface Database {
 Deno.serve(async (req) => {
   // Force cache bust - v2
   try {
-    // Debug: log environment variables
-    console.log('SUPABASE_URL:', Deno.env.get('SUPABASE_URL'))
-    console.log('SUPABASE_SERVICE_ROLE_KEY:', Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'))
-    console.log('SUPABASE_ANON_KEY:', Deno.env.get('SUPABASE_ANON_KEY'))
-    
-    // Use local Supabase for development, environment variables for production
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? 'http://127.0.0.1:54321'
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU'
-    
-    console.log('Using URL:', supabaseUrl)
-    console.log('Using Service Key:', supabaseServiceKey.substring(0, 20) + '...')
-    
-    // Initialize Supabase client with service role key (bypasses RLS)
+    // This is the correct way to initialize a client for admin tasks.
+    // It securely uses the key passed in the request header from the SQL function.
     const supabaseClient = createClient<Database>(
-      supabaseUrl,
-      supabaseServiceKey,
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
       {
-        auth: {
-          autoRefreshToken: false,
-          persistSession: false
-        }
+        global: { headers: { Authorization: req.headers.get('Authorization')! } }
       }
     )
 
